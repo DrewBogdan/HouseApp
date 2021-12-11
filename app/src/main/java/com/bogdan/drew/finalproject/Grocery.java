@@ -82,8 +82,8 @@ public class Grocery extends ListPiece {
                         reference.child("ID").removeValue();
                         reference.child("ID").push().setValue(id+1);
                         DatabaseReference tempRef = listRef.child("Grocery" + id);
-                        tempRef.push().setValue(userAdded);
                         tempRef.push().setValue(grocery);
+                        tempRef.push().setValue(userAdded);
                         thisRef = tempRef;
                     }
                 }
@@ -91,8 +91,8 @@ public class Grocery extends ListPiece {
         }
         else {
             tempRef = listRef.child("Grocery" + id);
-            tempRef.push().setValue(userAdded);
             tempRef.push().setValue(grocery);
+            tempRef.push().setValue(userAdded);
             thisRef = tempRef;
         }
     }
