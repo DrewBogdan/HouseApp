@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "300369357039",
+    "firebase_url": "https://cpsc312finalproject-default-rtdb.firebaseio.com",
+    "project_id": "cpsc312finalproject",
+    "storage_bucket": "cpsc312finalproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300369357039:android:997fb3f620368229c5131a",
+        "android_client_info": {
+          "package_name": "com.bogdan.drew.finalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300369357039-21smh5kqmjsfdglmvcvbh9q71sbfqcjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb1DrYBLAg2qGC0dC6Iae82sb4D6yfWyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300369357039-21smh5kqmjsfdglmvcvbh9q71sbfqcjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
