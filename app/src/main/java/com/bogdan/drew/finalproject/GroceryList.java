@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -31,14 +33,28 @@ public class GroceryList extends DrewList {
                 }
                 else {
                     Log.d(TAG, "onComplete: " + task.getResult().getValue());
-                    Scanner parser = new Scanner(String.valueOf(task.getResult().getValue())).useDelimiter("Grocery");
-                    parser.next();
-                    while(parser.hasNext()) {
-                        parseGrocery(parser.next());
-                    }
+                    updateData(String.valueOf(task.getResult().getValue()));
+                    attachListener();
                 }
             }
         });
+    }
+
+    private void attachListener() {
+        ValueEventListener changeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null) {
+                    updateData(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        baseReference.child("GroceryList").addValueEventListener(changeListener);
     }
 
     @Override
@@ -122,6 +138,14 @@ public class GroceryList extends DrewList {
     @Override
     public String toString() {
         return null;
+    }
+
+    private void updateData(String result) {
+        Scanner parser = new Scanner(String.valueOf(result)).useDelimiter("Grocery");
+        parser.next();
+        while(parser.hasNext()) {
+            parseGrocery(parser.next());
+        }
     }
 
     private void parseGrocery(String toParse) {

@@ -41,6 +41,51 @@ public class Debt extends ListPiece {
         reference = ref;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public User getUserOwing() {
+        return userOwing;
+    }
+
+    public void setUserOwing(User userOwing) {
+        this.userOwing = userOwing;
+    }
+
+    public User getUserOwed() {
+        return userOwed;
+    }
+
+    public void setUserOwed(User userOwed) {
+        this.userOwed = userOwed;
+    }
+
+    @Override
+    public String toString() {
+        return "Owed " + userOwed + " | Owing " + userOwing + " | " + amount + " | " + date + " | " + description + " | " + id;
+    }
+
     @Override
     protected void addData(DatabaseReference ref) {
         DatabaseReference tempRef;
@@ -57,15 +102,17 @@ public class Debt extends ListPiece {
                         Scanner parseEnd = new Scanner(result).useDelimiter("=");
                         parseEnd.next();
                         String end = parseEnd.next();
-                        Scanner parseNumber = new Scanner(end).useDelimiter("");
+                        Scanner parseNumber = new Scanner(end);
+                        String temp = parseNumber.next();
+                        parseNumber = new Scanner(temp.substring(0,temp.length()-1));
                         id = parseNumber.nextInt();
                         Log.d("firebasetag", "onComplete: " + id);
                         reference.child("ID").removeValue();
                         reference.child("ID").push().setValue(id+1);
                         DatabaseReference tempRef = ref.child("Debt" + id);
-                        tempRef.push().setValue(userOwed);
-                        tempRef.push().setValue(userOwing);
-                        tempRef.push().setValue(amount);
+                        tempRef.push().setValue(userOwed.toString() + "-0");
+                        tempRef.push().setValue(userOwing.toString() + "-1");
+                        tempRef.push().setValue("$" + amount);
                         tempRef.push().setValue(description);
                         tempRef.push().setValue(date);
                     }
@@ -74,8 +121,8 @@ public class Debt extends ListPiece {
         }
         else {
             tempRef = ref.child("Debt" + id);
-            tempRef.push().setValue(userOwed);
-            tempRef.push().setValue(userOwing);
+            tempRef.push().setValue(userOwed.toString() + "-0");
+            tempRef.push().setValue(userOwing.toString() + "-1");
             tempRef.push().setValue(amount);
             tempRef.push().setValue(description);
             tempRef.push().setValue(date);

@@ -15,7 +15,8 @@ public class Chore extends ListPiece {
 
     private String chore;
     private String date;
-    User userAdded;
+
+    private User userAdded;
 
     /**
      * DVC
@@ -35,7 +36,29 @@ public class Chore extends ListPiece {
         reference = ref;
     }
 
+    public String getChore() {
+        return chore;
+    }
 
+    public void setChore(String chore) {
+        this.chore = chore;
+    }
+
+    public User getUserAdded() {
+        return userAdded;
+    }
+
+    public void setUserAdded(User userAdded) {
+        this.userAdded = userAdded;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     protected void addData(DatabaseReference ref) {
@@ -53,13 +76,15 @@ public class Chore extends ListPiece {
                         Scanner parseEnd = new Scanner(result).useDelimiter("=");
                         parseEnd.next();
                         String end = parseEnd.next();
-                        Scanner parseNumber = new Scanner(end).useDelimiter("");
+                        Scanner parseNumber = new Scanner(end);
+                        String temp = parseNumber.next();
+                        parseNumber = new Scanner(temp.substring(0,temp.length()-1));
                         id = parseNumber.nextInt();
                         Log.d("firebasetag", "onComplete: " + id);
                         reference.child("ID").removeValue();
                         reference.child("ID").push().setValue(id+1);
                         DatabaseReference tempRef = ref.child("Chore" + id);
-                        tempRef.push().setValue(userAdded);
+                        tempRef.push().setValue(userAdded + "-0");
                         tempRef.push().setValue(chore);
                         tempRef.push().setValue(date);
                     }
@@ -68,9 +93,13 @@ public class Chore extends ListPiece {
         }
         else {
             tempRef = ref.child("Chore" + id);
-            tempRef.push().setValue(userAdded);
+            tempRef.push().setValue(userAdded + "-0");
             tempRef.push().setValue(chore);
             tempRef.push().setValue(date);
         }
+    }
+
+    public String toString() {
+        return userAdded + " | " + date + " | " + chore + " | " + id;
     }
 }

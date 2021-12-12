@@ -76,7 +76,9 @@ public class Grocery extends ListPiece {
                         Scanner parseEnd = new Scanner(result).useDelimiter("=");
                         parseEnd.next();
                         String end = parseEnd.next();
-                        Scanner parseNumber = new Scanner(end).useDelimiter("");
+                        Scanner parseNumber = new Scanner(end);
+                        String temp = parseNumber.next();
+                        parseNumber = new Scanner(temp.substring(0,temp.length()-1));
                         id = parseNumber.nextInt();
                         Log.d("firebasetag", "onComplete: " + id);
                         reference.child("ID").removeValue();
