@@ -27,6 +27,10 @@ public class House {
         groceries = new GroceryList(HouseListDatabaseReference);
         debts = new DebtList(HouseListDatabaseReference);
         users = new UserList(HouseListDatabaseReference);
+        chores.givePropertyChange(this);
+        groceries.givePropertyChange(this);
+        debts.givePropertyChange(this);
+        users.givePropertyChange(this);
     }
 
     /**
@@ -41,6 +45,10 @@ public class House {
         groceries = new GroceryList(HouseListDatabaseReference);
         debts = new DebtList(HouseListDatabaseReference);
         users = new UserList(HouseListDatabaseReference);
+        chores.givePropertyChange(this);
+        groceries.givePropertyChange(this);
+        debts.givePropertyChange(this);
+        users.givePropertyChange(this);
     }
 
     public void givePropertyChange() {
