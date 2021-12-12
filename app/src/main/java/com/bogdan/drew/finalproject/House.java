@@ -1,9 +1,17 @@
 package com.bogdan.drew.finalproject;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class House {
 
@@ -31,6 +39,7 @@ public class House {
         groceries.givePropertyChange(this);
         debts.givePropertyChange(this);
         users.givePropertyChange(this);
+        checkId();
     }
 
     /**
@@ -49,6 +58,7 @@ public class House {
         groceries.givePropertyChange(this);
         debts.givePropertyChange(this);
         users.givePropertyChange(this);
+        checkId();
     }
 
     public void givePropertyChange() {
@@ -68,6 +78,24 @@ public class House {
          * this will be called alot when the database is changed
          * if that makes sense
          */
+    }
+
+    private void checkId() {
+        HouseListDatabaseReference.child("ID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", "onComplete: " + task.getResult().getValue());
+                    String result = String.valueOf(task.getResult().getValue());
+                    if(result.length() < 20) {
+                        HouseListDatabaseReference.child("ID").push().setValue("1");
+                    }
+                }
+            }
+        });
     }
 
     /**
