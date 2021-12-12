@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/layout/activity_debt_list.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/layout/activity_house.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/layout/activity_lists.xml" value="0.353125" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/layout/activity_main.xml" value="0.3671875" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/layout/house_card_view.xml" value="0.3123359580052493" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/menu/cam_menu.xml" value="0.3671875" />
+        <entry key="..\:/Users/santi/Desktop/Android_Projects/HouseApp/app/src/main/res/menu/menu_main.xml" value="0.3671875" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

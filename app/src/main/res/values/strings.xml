@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">FinalProject</string>
     <string name="delim">={</string>
+    <string name="grocery_list">Grocery List</string>
+    <string name="chore_list">Chore List</string>
+    <string name="debt_list">Debt list</string>
+    <string name="title_activity_debt">DebtActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="spinner_items">
+        <item>Debts</item>
+        <item>Chores</item>
+        <item>Groceries</item>
+    </string-array>
 </resources>

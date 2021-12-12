@@ -1,12 +1,28 @@
 package com.bogdan.drew.finalproject;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,92 +34,131 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
-
-    private FirebaseDatabase FirebaseDatabase;
-    private DatabaseReference GroceryListDatabaseReference;
-    private DatabaseReference DebtListDatabaseReference;
-    private DatabaseReference ChoresListDatabaseReference;
-    private DatabaseReference DebtNameListDatabaseReference;
-    private DatabaseReference HouseListDatabaseReference;
-    public final String TAG = "demoTAG";
-
+    CustomAdapter adapter = new CustomAdapter();
+    ActivityResultLauncher<Intent> launcher;
+    ArrayList<Integer> codeList;
+    List<House> houseList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("House main");
+        if(savedInstanceState != null)
+            codeList = savedInstanceState.getIntegerArrayList("codeList");
+        else
+            codeList = new ArrayList<>();
+        // TODO: assign codes to create house objects and insert them
+        RecyclerView recyclerView = findViewById(R.id.houseRecyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
-        FirebaseDatabase = FirebaseDatabase.getInstance();
-        HouseListDatabaseReference = FirebaseDatabase.getReference().child("House");
-        GroceryListDatabaseReference = HouseListDatabaseReference.child("GroceryList");
-        DebtListDatabaseReference = HouseListDatabaseReference.child("DebtList");
-        ChoresListDatabaseReference = HouseListDatabaseReference.child("ChoresList");
-        DebtNameListDatabaseReference = DebtListDatabaseReference.child("DebtName");
-
-        HouseListDatabaseReference.child("ID").push().setValue("1");
-
-        GroceryList listTest = new GroceryList(HouseListDatabaseReference);
-
-        Button button = findViewById(R.id.button);
-        EditText editText = findViewById(R.id.editText);
-        button.setOnClickListener(new View.OnClickListener() {
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
-            public void onClick(View view) {
-//                String text = editText.getText().toString();
-//                DebtNameListDatabaseReference.push().setValue(text);
-                listTest.update(1, new Grocery(new User("Drew", HouseListDatabaseReference), "george", HouseListDatabaseReference.getRef()));
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    assert data != null;
+                    int code = data.getIntExtra("code", -1);
+                    codeList.add(code);
+
+                }
             }
         });
+    }
 
-        Button button2 = findViewById(R.id.button2);
-        EditText editText2 = findViewById(R.id.editText2);
-        button2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntegerArrayList("codeList", codeList);
+    }
+
+    class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+
+
+        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+
+            TextView title;
+            public CustomViewHolder(@NonNull View itemView) {
+                super(itemView);
+                title = findViewById(R.id.houseCardTitle);
+
+                itemView.setOnClickListener(this);
+                itemView.setOnLongClickListener(this);
+            }
+
             @Override
             public void onClick(View view) {
-                String text = editText2.getText().toString();
-                Grocery gry1 = new Grocery(new User("Drew", HouseListDatabaseReference), text, HouseListDatabaseReference.getRef());
-                listTest.insert(gry1);
+                House house = houseList.get(getAdapterPosition());
+                // house.get id
+                // TODO: start intent to open house main activity using the code
             }
-        });
 
-        Button button3 = findViewById(R.id.button3);
-        EditText editText3 = findViewById(R.id.editText3);
-        button3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//                String text = editText3.getText().toString();
-//                ChoresListDatabaseReference.push().setValue(text);
-                listTest.deleteAll();
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Delete house").setMessage("You are about to delete a house").setNegativeButton("Dismiss", null)
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // TODO: delete house item "houseCode"
+                                //houseList.remove(getAdapterPosition());
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                builder.show();
+                return true;
             }
-        });
 
-//        ChildEventListener childEventListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                String message = "no input";
-//                message = dataSnapshot.getValue(String.class);
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        };
-//        GroceryListDatabaseReference.addChildEventListener(childEventListener);
+            public void updateView(House house) {
+                //TODO: update the house with main attributes
+                //TODO: include code
+//                title.setText();
+//                address.setText(place.getVicinity());
+            }
 
+
+        }
+
+        @NonNull
+        @Override
+        public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(MainActivity.this)
+                    .inflate(R.layout.house_card_view, parent, false);
+            return new CustomViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+            House house = houseList.get(position);
+            holder.updateView(house);
+        }
+
+        @Override
+        public int getItemCount() {
+            return houseList.size();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.house_add:
+                Intent intent = new Intent(MainActivity.this, HouseActivity.class);
+                launcher.launch(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
