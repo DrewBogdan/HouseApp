@@ -46,6 +46,7 @@ public class GroceryList extends DrewList {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null) {
                     updateData(dataSnapshot.getValue().toString());
+                    firePropertyChange();
                 }
             }
 

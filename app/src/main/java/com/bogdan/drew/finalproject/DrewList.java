@@ -9,8 +9,18 @@ public abstract class DrewList {
     protected DatabaseReference baseReference;
     protected DatabaseReference currentReference;
 
+    protected House house;
+
     public DrewList(DatabaseReference HouseReference) {
         baseReference = HouseReference;
+    }
+
+    public void givePropertyChange(House house) {
+        this.house = house;
+    }
+
+    public void firePropertyChange() {
+        house.propertyChange();
     }
 
     abstract protected void insert(ListPiece item);

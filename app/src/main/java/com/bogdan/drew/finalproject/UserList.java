@@ -47,6 +47,7 @@ public class UserList extends DrewList {
                 if(dataSnapshot.getValue() != null) {
                     list.clear();
                     updateData(dataSnapshot.getValue().toString());
+                    firePropertyChange();
                 }
             }
 
