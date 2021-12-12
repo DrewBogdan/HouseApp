@@ -47,6 +47,7 @@ public class ChoreList extends DrewList {
                 if(dataSnapshot.getValue() != null) {
                     list.clear();
                     updateData(dataSnapshot.getValue().toString());
+                    firePropertyChange();
                 }
             }
 
@@ -216,4 +217,5 @@ public class ChoreList extends DrewList {
             list.add(chr);
         }
     }
+
 }
