@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
@@ -28,10 +31,7 @@ public class ItemActivity extends AppCompatActivity {
         House house = new House(houseId);
         if(type.compareTo("Debt") == 0) {
             setContentView(R.layout.debt_item);
-            Spinner spinner = (Spinner) findViewById(R.id.dateSpinnerDebt);
-            ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this, R.array.dates, R.layout.support_simple_spinner_dropdown_item);
-            adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            EditText dateEdit = findViewById(R.id.dateSpinnerDebt);
             EditText owedEdit = findViewById(R.id.owedEdit);
             EditText owingEdit = findViewById(R.id.OwingEdit);
             EditText descriptionEdit = findViewById(R.id.descriptionEdit);
@@ -45,16 +45,23 @@ public class ItemActivity extends AppCompatActivity {
                 String text = String.valueOf(intent.getDoubleExtra("amount", 1.0));
                 amountEdit.setText(text);
                 String date = intent.getStringExtra("date");
-//                for (int i = 0; i < spinner.getCount(); i++) {
-//                    if(date.compareTo(spinner.getItemAtPosition(i).toString()) == 0)
-//                        spinner.setSelection(i);
-//                }
+                dateEdit.setText(date);
                 add.setText("View Mode");
             }
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String date = spinner.getSelectedItem().toString();
+                    String date = dateEdit.getText().toString();
+                    char[] arr = date.toCharArray();
+                    StringBuilder newDate = new StringBuilder();
+                    if(arr.length != 5 || arr[2] != '/' ) {
+                        Toast.makeText(ItemActivity.this, "wrong date format", Toast.LENGTH_LONG).show();
+                        date = "";
+                    }
+                    else {
+                        newDate.append(arr[0]).append(arr[1]).append("/").append(arr[3]).append(arr[4]);
+
+                    }
                     String owed = owedEdit.getText().toString();
                     String owing = owingEdit.getText().toString();
                     String description = descriptionEdit.getText().toString();
@@ -70,10 +77,6 @@ public class ItemActivity extends AppCompatActivity {
                         house.setCurrentSelected("Debt");
                         if (!editing)
                             house.insert(new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-//                        else {
-//                            Log.d(TAG, "update");
-//                            house.update(intent.getIntExtra("id",-1), new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-//                        }
                         ItemActivity.this.finish();
                     }
                 }
@@ -82,10 +85,7 @@ public class ItemActivity extends AppCompatActivity {
         }
         else if(type.compareTo("Chore") == 0) {
             setContentView(R.layout.chore_item);
-            Spinner spinner = (Spinner) findViewById(R.id.dateSpinner);
-            ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this, R.array.dates, R.layout.support_simple_spinner_dropdown_item);
-            adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            EditText dateEdit = findViewById(R.id.dateSpinner);
             EditText choreEdit = findViewById(R.id.choreEdit);
             EditText userEdit = findViewById(R.id.dateEdit);
             Button add = findViewById(R.id.choreButton);
@@ -94,18 +94,24 @@ public class ItemActivity extends AppCompatActivity {
                 choreEdit.setText(intent.getStringExtra("chore"));
                 userEdit.setText(intent.getStringExtra("user"));
                 String date = intent.getStringExtra("date");
-                Log.d(TAG, date + spinner.getCount());
-//                for (int i = 0; i < spinner.getCount(); i++) {
-//                    if(date.compareTo(spinner.getItemAtPosition(i).toString()) == 0)
-//                        spinner.setSelection(i);
-//                }
+                dateEdit.setText(date);
                 add.setText("View Mode");
 
             }
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String date = spinner.getSelectedItem().toString();
+                    String date = dateEdit.getText().toString();
+                    char[] arr = date.toCharArray();
+                    StringBuilder newDate = new StringBuilder();
+                    if(arr.length != 5 || arr[2] != '/' ) {
+                        Toast.makeText(ItemActivity.this, "wrong date format", Toast.LENGTH_LONG).show();
+                        date = "";
+                    }
+                    else {
+                        newDate.append(arr[0]).append(arr[1]).append("/").append(arr[3]).append(arr[4]);
+
+                    }
                     String chore = choreEdit.getText().toString();
                     String userText = userEdit.getText().toString();
                     house.setCurrentSelected("Chore");
