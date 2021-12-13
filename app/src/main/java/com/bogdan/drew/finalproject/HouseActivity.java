@@ -30,9 +30,9 @@ public class HouseActivity extends AppCompatActivity{
 
     public static final String TAG = "houseTag";
     int code;
-//    CustomGroceryAdapter groceryAdapter;
-//    CustomDebtAdapter debtAdapter;
-//    CustomChoresAdapter choresAdapter;
+    CustomGroceryAdapter groceryAdapter;
+     CustomDebtAdapter debtAdapter;
+    CustomChoresAdapter choresAdapter;
     House house;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class HouseActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(spinner.getSelectedItem().toString().compareTo("Debt") == 0) {
                     house.setCurrentSelected("Debt");
-                    CustomDebtAdapter debtAdapter = new CustomDebtAdapter(house.getAll());
+                     debtAdapter = new CustomDebtAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -63,7 +63,7 @@ public class HouseActivity extends AppCompatActivity{
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Chore") == 0) {
                     house.setCurrentSelected("Chore");
-                    CustomChoresAdapter choresAdapter = new CustomChoresAdapter(house.getAll());
+                     choresAdapter = new CustomChoresAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -71,7 +71,7 @@ public class HouseActivity extends AppCompatActivity{
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Grocery") == 0) {
                     house.setCurrentSelected("Grocery");
-                    CustomGroceryAdapter groceryAdapter = new CustomGroceryAdapter(house.getAll());
+                     groceryAdapter = new CustomGroceryAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -358,6 +358,7 @@ public class HouseActivity extends AppCompatActivity{
                 intent.putExtra("houseId", code);
                 intent.putExtra("editing", false);
                 startActivity(intent);
+
                 break;
             case R.id.deleteMenuItem:
                 spinner = (Spinner) findViewById(R.id.spinner);

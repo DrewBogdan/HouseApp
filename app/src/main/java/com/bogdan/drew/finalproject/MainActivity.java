@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                                 houseList.remove(getAdapterPosition());
                                 codeList.remove(getAdapterPosition());
                                 adapter.notifyItemRemoved(getAdapterPosition());
-                                codeList.clear();
                             }
                         });
                 builder.show();
@@ -186,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, code + "");
                 adapter.notifyDataSetChanged();
                 break;
-            case R.id.deleteMenuItem:
         }
         return super.onOptionsItemSelected(item);
     }

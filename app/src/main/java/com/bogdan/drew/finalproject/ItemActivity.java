@@ -157,6 +157,7 @@ public class ItemActivity extends AppCompatActivity {
                             house.insert(new Grocery(userObject, title, house.getHouseListDatabaseReference()));
                         //else
                         //    house.update(houseId, new Grocery(userObject, title, house.getHouseListDatabaseReference()));
+
                         ItemActivity.this.finish();
                     }
 
