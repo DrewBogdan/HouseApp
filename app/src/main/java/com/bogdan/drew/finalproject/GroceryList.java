@@ -142,6 +142,7 @@ public class GroceryList extends DrewList {
     }
 
     private void updateData(String result) {
+        list.clear();
         Scanner parser = new Scanner(String.valueOf(result)).useDelimiter("Grocery");
         parser.next();
         while(parser.hasNext()) {

@@ -3,6 +3,7 @@ package com.bogdan.drew.finalproject;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,6 +67,7 @@ public class House {
     }
 
     public void givePropertyChange() {
+
         /**
          * give the reference to the recycler view
          * object here and make a method this can

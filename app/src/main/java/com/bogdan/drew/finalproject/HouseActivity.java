@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,9 @@ public class HouseActivity extends AppCompatActivity{
 
     public static final String TAG = "houseTag";
     int code;
+    CustomGroceryAdapter groceryAdapter;
+    CustomDebtAdapter debtAdapter;
+    CustomChoresAdapter choresAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,7 @@ public class HouseActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(spinner.getSelectedItem().toString().compareTo("Debt") == 0) {
                     house.setCurrentSelected("Debt");
-                    CustomDebtAdapter debtAdapter = new CustomDebtAdapter(house.getAll());
+                    debtAdapter = new CustomDebtAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -57,7 +62,7 @@ public class HouseActivity extends AppCompatActivity{
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Chore") == 0) {
                     house.setCurrentSelected("Chore");
-                    CustomChoresAdapter choresAdapter = new CustomChoresAdapter(house.getAll());
+                    choresAdapter = new CustomChoresAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -65,7 +70,7 @@ public class HouseActivity extends AppCompatActivity{
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Grocery") == 0) {
                     house.setCurrentSelected("Grocery");
-                    CustomGroceryAdapter groceryAdapter = new CustomGroceryAdapter(house.getAll());
+                    groceryAdapter = new CustomGroceryAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -277,7 +282,7 @@ public class HouseActivity extends AppCompatActivity{
 
         @Override
         public int getItemCount() {
-            Log.d(TAG, "grocery");
+            Log.d(TAG, "grocery" + groceryList.size());
             return groceryList.size();
         }
     }
@@ -312,12 +317,27 @@ public class HouseActivity extends AppCompatActivity{
                 House house = new House(code);
 
                 if(selected.compareTo("Debt") == 0)
-                    h
+                    house.setCurrentSelected("Debt");
                 else if(selected.compareTo("Chore") == 0)
-                    intent.putExtra("type", "Chore");
+                    house.setCurrentSelected("Chore");
                 else if(selected.compareTo("Grocery") == 0)
-                    intent.putExtra("type", "Grocery");
+                    house.setCurrentSelected("Grocery");
                 ArrayList<ListPiece> listPieceArrayList = house.getAll();
+                AlertDialog.Builder builder = new AlertDialog.Builder(HouseActivity.this);
+                builder.setTitle("Delete " + selected).setMessage("You are about to delete a " + selected).setNegativeButton("Dismiss", null)
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                house.deleteAll();
+                                if(selected.compareTo("Debt") == 0)
+                                    debtAdapter.notifyDataSetChanged();
+                                else if(selected.compareTo("Chore") == 0)
+                                    choresAdapter.notifyDataSetChanged();
+                                else if(selected.compareTo("Grocery") == 0)
+                                    groceryAdapter.notifyDataSetChanged();
+                            }
+                        });
+                builder.show();
         }
         return super.onOptionsItemSelected(item);
     }
