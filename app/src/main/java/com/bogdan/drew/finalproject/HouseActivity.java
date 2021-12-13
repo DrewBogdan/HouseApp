@@ -33,8 +33,7 @@ public class HouseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_house);
         Intent receive_intent = getIntent();
         int code = receive_intent.getIntExtra("code", -1);
-        // TODO: include house code to create object
-        //House house = new House(code);
+        House house = new House(code);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this, R.array.spinner_items, R.layout.support_simple_spinner_dropdown_item);
@@ -42,35 +41,19 @@ public class HouseActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
         String item = spinner.getSelectedItem().toString();
 
-        // TO REMOVE
-        House house = new House();
-        list = list(item, house);
+        TextView textView = findViewById(R.id.house_title);
+        textView.setText("House " + code);
+
         RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
 
+        house.setCurrentSelected(item);
+
     }
 
-    public Object object(String item, House house) {
-        if(item.compareTo("Debts") == 0) {
-            List<Debt> listDebts = new ArrayList<>();
-            // TODO: get list from house object
-            return listDebts;
-        }
-        else if (item.compareTo("Chores") == 0) {
-            List<Chore> choreList = new ArrayList<>();
-            // TODO: get list from house object
-            return choreList;
-        }
-        else {
-            List<Grocery> groceryList = new ArrayList<>();
-            // TODO: get list from house object
-            return groceryList;
-        }
-    }
-
-    class CustomListAdapter extends RecyclerView.Adapter<MainActivity.CustomAdapter.CustomViewHolder> {
+    class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.CustomListViewHolder> {
 
 
         class CustomListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -86,7 +69,7 @@ public class HouseActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                House house = houseList.get(getAdapterPosition());
+                //House house = houseList.get(getAdapterPosition());
                 // house.get id
                 // TODO: start intent to open house main activity using the code
             }
@@ -109,40 +92,23 @@ public class HouseActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public MainActivity.CustomAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(MainActivity.this)
+        public CustomListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(HouseActivity.this)
                     .inflate(R.layout.house_card_view, parent, false);
-            return new MainActivity.CustomAdapter.CustomViewHolder(view);
+            return new CustomListViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MainActivity.CustomAdapter.CustomViewHolder holder, int position) {
-            House house = houseList.get(position);
-            holder.updateView(house);
+        public void onBindViewHolder(@NonNull CustomListViewHolder holder, int position) {
+           // House house = houseList.get(position);
+            //holder.updateView(house);
         }
 
         @Override
         public int getItemCount() {
-            return houseList.size();
+            return 0;
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.house_add:
-                Intent intent = new Intent(MainActivity.this, HouseActivity.class);
-                launcher.launch(intent);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-}
 }

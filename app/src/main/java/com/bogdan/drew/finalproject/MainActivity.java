@@ -36,39 +36,52 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     CustomAdapter adapter = new CustomAdapter();
-    ActivityResultLauncher<Intent> launcher;
     ArrayList<Integer> codeList;
     List<House> houseList = new ArrayList<>();
+    public static final String TAG = "mainActivityTag";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("House main");
-        if(savedInstanceState != null)
+        if(savedInstanceState != null) {
             codeList = savedInstanceState.getIntegerArrayList("codeList");
-        else
+            for (int i = 0; i < codeList.size(); i++) {
+                houseList.add(new House(codeList.get(i)));
+            }
+            Log.d(TAG, houseList.size() + "here");
+            adapter.notifyDataSetChanged();
+        }
+        else {
             codeList = new ArrayList<>();
+            Log.d(TAG, "not here");
+        }
         // TODO: assign codes to create house objects and insert them
         RecyclerView recyclerView = findViewById(R.id.houseRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        EditText editText = findViewById(R.id.codeEnter);
+        Button addHouse = findViewById(R.id.addHouse);
+        addHouse.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    assert data != null;
-                    int code = data.getIntExtra("code", -1);
+            public void onClick(View view) {
+                String text = editText.getText().toString();
+                if(text.compareTo("") != 0) {
+                    int code = Integer.parseInt(text);
+                    House house = new House(code);
+                    houseList.add(house);
                     codeList.add(code);
-
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
+
     }
 
     @Override
@@ -85,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             TextView title;
             public CustomViewHolder(@NonNull View itemView) {
                 super(itemView);
-                title = findViewById(R.id.houseCardTitle);
+                title = itemView.findViewById(R.id.houseCardTitle);
 
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
@@ -93,9 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                House house = houseList.get(getAdapterPosition());
-                // house.get id
-                // TODO: start intent to open house main activity using the code
+                int code = codeList.get(getAdapterPosition());
+                Intent intent = new Intent(MainActivity.this, HouseActivity.class);
+                intent.putExtra("code", code);
+                startActivity(intent);
+
             }
 
             @Override
@@ -105,9 +120,10 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // TODO: delete house item "houseCode"
-                                //houseList.remove(getAdapterPosition());
-                                adapter.notifyDataSetChanged();
+                                houseList.remove(getAdapterPosition());
+                                codeList.remove(getAdapterPosition());
+                                adapter.notifyItemRemoved(getAdapterPosition());
+                                codeList.clear();
                             }
                         });
                 builder.show();
@@ -115,10 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void updateView(House house) {
-                //TODO: update the house with main attributes
-                //TODO: include code
-//                title.setText();
-//                address.setText(place.getVicinity());
+                title.setText("house " +  codeList.get(getAdapterPosition()));
             }
 
 
@@ -135,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
             House house = houseList.get(position);
+            Log.d(TAG, position + "");
             holder.updateView(house);
         }
 
@@ -155,10 +169,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.house_add:
-                Intent intent = new Intent(MainActivity.this, HouseActivity.class);
-                launcher.launch(intent);
+                int code = generateCode();
+                codeList.add(code);
+                House house = new House(code);
+                houseList.add(house);
+                Log.d(TAG, code + "");
+                adapter.notifyDataSetChanged();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private int generateCode() {
+        int code = 0;
+        for (int i = 0; i < 4; i++) {
+            Random random = new Random();
+            code += (random.nextInt(10) * Math.pow(10,i));
+        }
+        return code;
     }
 }

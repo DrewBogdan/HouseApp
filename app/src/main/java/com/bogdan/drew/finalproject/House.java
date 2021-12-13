@@ -131,7 +131,7 @@ public class House {
         /**
          * Item cannot contain the key words
          * Chore,Debt,Grocery,User
-         * If it contains any of these the entire parse method is fucked
+         * If it contains any of these the entire parse method
          * it also cannot contain the special characters
          * },{,=,-
          */
