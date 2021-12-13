@@ -27,8 +27,7 @@ import java.util.List;
 public class HouseActivity extends AppCompatActivity{
 
     public static final String TAG = "houseTag";
-    List<ListPiece> list;
-    House house;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +42,7 @@ public class HouseActivity extends AppCompatActivity{
         spinner.setAdapter(adapter);
 
         TextView textView = findViewById(R.id.house_title);
-        textView.setText("House " + code);
+        textView.setText(getString(R.string.housename) + code);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -57,14 +56,16 @@ public class HouseActivity extends AppCompatActivity{
                     recyclerView.setAdapter(debtAdapter);
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Chore") == 0) {
-                    CustomChoresAdapter choresAdapter = new CustomChoresAdapter();
+                    house.setCurrentSelected("Chore");
+                    CustomChoresAdapter choresAdapter = new CustomChoresAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(choresAdapter);
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Grocery") == 0) {
-                    CustomGroceryAdapter groceryAdapter = new CustomGroceryAdapter();
+                    house.setCurrentSelected("Grocery");
+                    CustomGroceryAdapter groceryAdapter = new CustomGroceryAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -83,11 +84,11 @@ public class HouseActivity extends AppCompatActivity{
 
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
 
-        public CustomDebtAdapter(ListPiece debtList) {
-            this.debtList = (DebtList) debtList;
+        public CustomDebtAdapter(ArrayList<ListPiece> debtList) {
+            this.debtList = debtList;
         }
 
-        DebtList debtList;
+        ArrayList<ListPiece> debtList;
         class CustomDebtViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
@@ -102,16 +103,14 @@ public class HouseActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                Debt debt = debtList.list.get(getAdapterPosition());
+                Debt debt = (Debt) debtList.get(getAdapterPosition());
                 double amount = debt.getAmount();
                 int id = debt.getId();
                 String description = debt.getDescription();
                 String userOwed = debt.getUserOwed().toString();
                 String usedOwing = debt.getUserOwing().toString();
+                int position = getAdapterPosition();
 
-                Intent intent = new Intent()
-
-                // house.get id
                 // TODO: start intent to open house main activity using the code
             }
 
@@ -140,35 +139,45 @@ public class HouseActivity extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(@NonNull CustomDebtViewHolder holder, int position) {
-           Debt debt = debtList.list.get(position);
+           Debt debt = (Debt) debtList.get(position);
            holder.updateView(debt);
         }
 
         @Override
         public int getItemCount() {
             Log.d(TAG, "debt");
-            return debtList.list.size();
+            return debtList.size();
         }
     }
 
     class CustomChoresAdapter extends RecyclerView.Adapter<CustomChoresAdapter.CustomChoresViewHolder> {
-//        ArrayList<ListPiece> choreList = house.getAll();
+
+        public CustomChoresAdapter(ArrayList<ListPiece> choreList) {
+            this.choreList = choreList;
+        }
+
+        ArrayList<ListPiece> choreList;
         class CustomChoresViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
+            ImageView imageView;
             public CustomChoresViewHolder(@NonNull View itemView) {
                 super(itemView);
                 title = findViewById(R.id.houseCardTitle);
-
+                imageView = findViewById(R.id.houseCardImage);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-                //House house = houseList.get(getAdapterPosition());
-                // house.get id
                 // TODO: start intent to open house main activity using the code
+                Chore chore = (Chore) choreList.get(getAdapterPosition());
+                String choreToDo = chore.getChore();
+                String userAdded = chore.getUserAdded().toString();
+                String date = chore.getDate();
+                int position = getAdapterPosition();
+
             }
 
             @Override
@@ -177,11 +186,10 @@ public class HouseActivity extends AppCompatActivity{
                 return true;
             }
 
-            public void updateView(ListPiece piece) {
-                //TODO: update the house with main attributes
-                //TODO: include code
-              //title.setText();
-//                address.setText(place.getVicinity());
+            public void updateView(Chore chore) {
+                title.setText(chore.getChore());
+                // "https://www.flaticon.com/authors/smashicons"
+                imageView.setImageResource(R.drawable.bucket);
             }
 
 
@@ -198,26 +206,32 @@ public class HouseActivity extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(@NonNull CustomChoresViewHolder holder, int position) {
-            ListPiece listPiece = list.get(position);
-            holder.updateView(listPiece);
+            Chore chore = (Chore) choreList.get(position);
+            holder.updateView(chore);
         }
 
         @Override
         public int getItemCount() {
             Log.d(TAG, "chore");
-            return 0;
+            return choreList.size();
         }
     }
 
     class CustomGroceryAdapter extends RecyclerView.Adapter<CustomGroceryAdapter.CustomGroceryViewHolder> {
-        List<Grocery> debtList;
+        public CustomGroceryAdapter(ArrayList<ListPiece> groceryList) {
+            this.groceryList = groceryList;
+        }
+
+        ArrayList<ListPiece> groceryList;
 
         class CustomGroceryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
+            ImageView imageView;
             public CustomGroceryViewHolder(@NonNull View itemView) {
                 super(itemView);
                 title = findViewById(R.id.houseCardTitle);
+                imageView = findViewById(R.id.houseCardImage);
                 Log.d(TAG, "grocery");
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
@@ -225,9 +239,11 @@ public class HouseActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                //House house = houseList.get(getAdapterPosition());
-                // house.get id
                 // TODO: start intent to open house main activity using the code
+                Grocery grocery = (Grocery) groceryList.get(getAdapterPosition());
+                String groceryAdded = grocery.getGrocery();
+                String userAdded = grocery.getUserAdded().toString();
+                int position = getAdapterPosition();
             }
 
             @Override
@@ -236,11 +252,10 @@ public class HouseActivity extends AppCompatActivity{
                 return true;
             }
 
-            public void updateView(House house) {
-                //TODO: update the house with main attributes
-                //TODO: include code
-//                title.setText();
-//                address.setText(place.getVicinity());
+            public void updateView(Grocery grocery) {
+                title.setText(grocery.getGrocery());
+                // "https://www.flaticon.com/authors/smashicons"
+                imageView.setImageResource(R.drawable.grocery);
             }
 
 
@@ -256,15 +271,14 @@ public class HouseActivity extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(@NonNull CustomGroceryViewHolder holder, int position) {
-            ListPiece piece= list.get(position);
-
-            //holder.updateView(house);
+            Grocery grocery = (Grocery) groceryList.get(position);
+            holder.updateView(grocery);
         }
 
         @Override
         public int getItemCount() {
             Log.d(TAG, "grocery");
-            return 0;
+            return groceryList.size();
         }
     }
 
@@ -279,6 +293,7 @@ public class HouseActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenuItem:
+
                 break;
             case R.id.deleteMenuItem:
         }
