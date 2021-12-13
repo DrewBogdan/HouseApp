@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
@@ -35,12 +37,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
     CustomAdapter adapter = new CustomAdapter();
     ArrayList<Integer> codeList;
+    public final String FILE = "";
     List<House> houseList = new ArrayList<>();
     public static final String TAG = "mainActivityTag";
     @Override
@@ -48,28 +54,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("House main");
-//        if(savedInstanceState != null) {
-//            codeList = new ArrayList<>();
-//            codeList = savedInstanceState.getIntegerArrayList("codeList");
-//            Log.d(TAG, codeList.size() + "herelklkh");
-//            if(codeList.size()== 0)
-//                codeList = new ArrayList<>();
-//            else {
-//                for (int i = 0; i < codeList.size(); i++) {
-//                    houseList.add(new House(codeList.get(i)));
-//                }
-//            }
-//
-//            Log.d(TAG, houseList.size() + "here");
-//            adapter.notifyDataSetChanged();
-//        }
-//        else
-            codeList = new ArrayList<>();
-        // TODO: assign codes to create house objects and insert them
         RecyclerView recyclerView = findViewById(R.id.houseRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(FILE, Context.MODE_PRIVATE);
+        String key = sharedPreferences.getString("code", "");
+        StringTokenizer st = new StringTokenizer(key, ",");
+        codeList = new ArrayList<>();
+        while(st.hasMoreElements()) {
+            codeList.add(Integer.parseInt(st.nextToken()));
+        }
+        for (int i = 0; i < codeList.size(); i++)
+            houseList.add(new House(codeList.get(i)));
 
         EditText editText = findViewById(R.id.codeEnter);
         Button addHouse = findViewById(R.id.addHouse);
@@ -89,13 +86,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle outState) {
-//
-//        outState.putIntegerArrayList("codeList", codeList);
-//        Log.d(TAG, codeList.size()+ "");
-//        super.onSaveInstanceState(outState);
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences(FILE, Context.MODE_PRIVATE);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < codeList.size(); i++) {
+            stringBuilder.append(codeList.get(i)).append(",");
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("code", stringBuilder.toString());
+        editor.commit();
+
+    }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
