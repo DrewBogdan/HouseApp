@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, code + "");
                 adapter.notifyDataSetChanged();
                 break;
+            case R.id.deleteMenuItem:
         }
         return super.onOptionsItemSelected(item);
     }

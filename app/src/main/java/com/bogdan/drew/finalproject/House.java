@@ -42,6 +42,10 @@ public class House {
         checkId();
     }
 
+    public DatabaseReference getHouseListDatabaseReference() {
+        return HouseListDatabaseReference;
+    }
+
     /**
      * will take in a house code and set the referenaces
      * to that code. if that code does not exist a new

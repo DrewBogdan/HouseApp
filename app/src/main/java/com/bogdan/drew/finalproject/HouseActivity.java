@@ -27,13 +27,13 @@ import java.util.List;
 public class HouseActivity extends AppCompatActivity{
 
     public static final String TAG = "houseTag";
-
+    int code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house);
         Intent receive_intent = getIntent();
-        int code = receive_intent.getIntExtra("code", -1);
+        code = receive_intent.getIntExtra("code", -1);
         House house = new House(code);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -95,8 +95,8 @@ public class HouseActivity extends AppCompatActivity{
             ImageView imageView;
             public CustomDebtViewHolder(@NonNull View itemView) {
                 super(itemView);
-                title = findViewById(R.id.houseCardTitle);
-                imageView = findViewById(R.id.houseCardImage);
+                title = itemView.findViewById(R.id.houseCardTitle);
+                imageView = itemView.findViewById(R.id.houseCardImage);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
@@ -163,8 +163,8 @@ public class HouseActivity extends AppCompatActivity{
             ImageView imageView;
             public CustomChoresViewHolder(@NonNull View itemView) {
                 super(itemView);
-                title = findViewById(R.id.houseCardTitle);
-                imageView = findViewById(R.id.houseCardImage);
+                title = itemView.findViewById(R.id.houseCardTitle);
+                imageView = itemView.findViewById(R.id.houseCardImage);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
@@ -230,8 +230,8 @@ public class HouseActivity extends AppCompatActivity{
             ImageView imageView;
             public CustomGroceryViewHolder(@NonNull View itemView) {
                 super(itemView);
-                title = findViewById(R.id.houseCardTitle);
-                imageView = findViewById(R.id.houseCardImage);
+                title = itemView.findViewById(R.id.houseCardTitle);
+                imageView = itemView.findViewById(R.id.houseCardImage);
                 Log.d(TAG, "grocery");
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
@@ -293,9 +293,31 @@ public class HouseActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addMenuItem:
-
+                Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                String selected = spinner.getSelectedItem().toString();
+                Intent intent = new Intent(HouseActivity.this, ItemActivity.class);
+                if(selected.compareTo("Debt") == 0)
+                    intent.putExtra("type", "Debt");
+                else if(selected.compareTo("Chore") == 0)
+                    intent.putExtra("type", "Chore");
+                else if(selected.compareTo("Grocery") == 0)
+                    intent.putExtra("type", "Grocery");
+                intent.putExtra("houseId", code);
+                intent.putExtra("editing", false);
+                startActivity(intent);
                 break;
             case R.id.deleteMenuItem:
+                spinner = (Spinner) findViewById(R.id.spinner);
+                selected = spinner.getSelectedItem().toString();
+                House house = new House(code);
+
+                if(selected.compareTo("Debt") == 0)
+                    h
+                else if(selected.compareTo("Chore") == 0)
+                    intent.putExtra("type", "Chore");
+                else if(selected.compareTo("Grocery") == 0)
+                    intent.putExtra("type", "Grocery");
+                ArrayList<ListPiece> listPieceArrayList = house.getAll();
         }
         return super.onOptionsItemSelected(item);
     }
