@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,7 +49,8 @@ public class HouseActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(spinner.getSelectedItem().toString().compareTo("Debt") == 0) {
-                    CustomDebtAdapter debtAdapter = new CustomDebtAdapter();
+                    house.setCurrentSelected("Debt");
+                    CustomDebtAdapter debtAdapter = new CustomDebtAdapter(house.getAll());
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -81,20 +83,34 @@ public class HouseActivity extends AppCompatActivity{
 
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
 
+        public CustomDebtAdapter(ListPiece debtList) {
+            this.debtList = (DebtList) debtList;
+        }
+
+        DebtList debtList;
         class CustomDebtViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
+            ImageView imageView;
             public CustomDebtViewHolder(@NonNull View itemView) {
                 super(itemView);
                 title = findViewById(R.id.houseCardTitle);
-
+                imageView = findViewById(R.id.houseCardImage);
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-                //House house = houseList.get(getAdapterPosition());
+                Debt debt = debtList.list.get(getAdapterPosition());
+                double amount = debt.getAmount();
+                int id = debt.getId();
+                String description = debt.getDescription();
+                String userOwed = debt.getUserOwed().toString();
+                String usedOwing = debt.getUserOwing().toString();
+
+                Intent intent = new Intent()
+
                 // house.get id
                 // TODO: start intent to open house main activity using the code
             }
@@ -105,11 +121,10 @@ public class HouseActivity extends AppCompatActivity{
                 return true;
             }
 
-            public void updateView(House house) {
-                //TODO: update the house with main attributes
-                //TODO: include code
-//                title.setText();
-//                address.setText(place.getVicinity());
+            public void updateView(Debt debt) {
+                title.setText(debt.getDescription());
+                // "https://www.flaticon.com/authors/dimitry-miroliubov"
+                imageView.setImageResource(R.drawable.money);
             }
 
 
@@ -125,15 +140,14 @@ public class HouseActivity extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(@NonNull CustomDebtViewHolder holder, int position) {
-           ListPiece piece= list.get(position);
-
-            //holder.updateView(house);
+           Debt debt = debtList.list.get(position);
+           holder.updateView(debt);
         }
 
         @Override
         public int getItemCount() {
             Log.d(TAG, "debt");
-            return 0;
+            return debtList.list.size();
         }
     }
 
