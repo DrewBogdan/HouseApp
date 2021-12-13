@@ -90,9 +90,12 @@ public class ChoreList extends DrewList {
 
     @Override
     public void deleteSingle(int id) {
+        Log.d(TAG, "deleteSingle: yes " + id);
         int toDelete = -1;
         for(int count = 0; count < list.size(); count++) {
+            Log.d(TAG, "deleteSingle: " + list.get(count).getId());
             if(list.get(count).getId() == id) {
+                Log.d(TAG, "deleteSingle: found");
                 list.get(count).deleteData();
                 toDelete = count;
             }
@@ -159,7 +162,7 @@ public class ChoreList extends DrewList {
             User usr = new User(baseReference);
             Chore chr = new Chore(baseReference);
             chr.setId(parser.nextInt());
-            parser = new Scanner(choreParse).useDelimiter("-M");
+            parser = new Scanner(choreParse).useDelimiter("-Mq");
             parser.next();
             while (parser.hasNext()) {
                 strings.add(parser.next().substring(10));

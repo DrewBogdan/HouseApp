@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Grocery extends ListPiece {
@@ -62,6 +64,7 @@ public class Grocery extends ListPiece {
 
     @Override
     public void addData(DatabaseReference listRef) {
+        Log.d(TAG, "addData: " + this);
         DatabaseReference tempRef;
         if(id == 0) {
             reference.child("ID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -85,7 +88,7 @@ public class Grocery extends ListPiece {
                         reference.child("ID").push().setValue(id+1);
                         DatabaseReference tempRef = listRef.child("Grocery" + id);
                         tempRef.push().setValue(grocery);
-                        tempRef.push().setValue(userAdded);
+                        tempRef.push().setValue(userAdded.toString() + "-0");
                         thisRef = tempRef;
                     }
                 }
@@ -94,7 +97,7 @@ public class Grocery extends ListPiece {
         else {
             tempRef = listRef.child("Grocery" + id);
             tempRef.push().setValue(grocery);
-            tempRef.push().setValue(userAdded);
+            tempRef.push().setValue(userAdded.toString() + "-0");
             thisRef = tempRef;
         }
     }

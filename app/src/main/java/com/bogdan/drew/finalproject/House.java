@@ -163,6 +163,8 @@ public class House {
 
     public void deleteSingle(int id) {
         if(currentSelected != null) {
+            Log.d("TestingTag", "deleteSingle: test");
+            Log.d("TestingTag", "deleteSingle: " + currentSelected.getClass());
             currentSelected.deleteSingle(id);
         }
     }

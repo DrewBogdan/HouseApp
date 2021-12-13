@@ -89,9 +89,11 @@ public class DebtList extends DrewList {
 
     @Override
     public void deleteSingle(int id) {
+        Log.d(TAG, "deleteSingle: yes");
         int toDelete = -1;
         for(int count = 0; count < list.size(); count++) {
             if(list.get(count).getId() == id) {
+                Log.d(TAG, "deleteSingle: found");
                 list.get(count).deleteData();
                 toDelete = count;
             }
