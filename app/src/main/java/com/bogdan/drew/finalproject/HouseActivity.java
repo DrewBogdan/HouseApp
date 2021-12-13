@@ -112,11 +112,19 @@ public class HouseActivity extends AppCompatActivity{
                 double amount = debt.getAmount();
                 int id = debt.getId();
                 String description = debt.getDescription();
-                String userOwed = debt.getUserOwed().toString();
-                String usedOwing = debt.getUserOwing().toString();
-                int position = getAdapterPosition();
-
-                // TODO: start intent to open house main activity using the code
+                String userOwed = debt.getUserOwed().getName();
+                String userOwing = debt.getUserOwing().getName();
+                String date = debt.getDate();
+                Intent intent = new Intent(HouseActivity.this, ItemActivity.class);
+                intent.putExtra("owed", userOwed);
+                intent.putExtra("amount", amount);
+                intent.putExtra("id", id);
+                intent.putExtra("description", description);
+                intent.putExtra("owing", userOwing);
+                intent.putExtra("date", date);
+                intent.putExtra("type", "Debt");
+                intent.putExtra("editing", true);
+                startActivity(intent);
             }
 
             @Override
@@ -179,10 +187,17 @@ public class HouseActivity extends AppCompatActivity{
                 // TODO: start intent to open house main activity using the code
                 Chore chore = (Chore) choreList.get(getAdapterPosition());
                 String choreToDo = chore.getChore();
-                String userAdded = chore.getUserAdded().toString();
+                String userAdded = chore.getUserAdded().getName();
                 String date = chore.getDate();
-                int position = getAdapterPosition();
 
+                Intent intent = new Intent(HouseActivity.this, ItemActivity.class);
+                intent.putExtra("chore", choreToDo);
+                intent.putExtra("user", userAdded);
+                intent.putExtra("date", date);
+                intent.putExtra("id", chore.getId());
+                intent.putExtra("type", "Chore");
+                intent.putExtra("editing", true);
+                startActivity(intent);
             }
 
             @Override
@@ -246,9 +261,14 @@ public class HouseActivity extends AppCompatActivity{
             public void onClick(View view) {
                 // TODO: start intent to open house main activity using the code
                 Grocery grocery = (Grocery) groceryList.get(getAdapterPosition());
-                String groceryAdded = grocery.getGrocery();
-                String userAdded = grocery.getUserAdded().toString();
-                int position = getAdapterPosition();
+                Intent intent = new Intent(HouseActivity.this, ItemActivity.class);
+                intent.putExtra("grocery", grocery.getGrocery());
+                intent.putExtra("user", grocery.getUserAdded().getName());
+                intent.putExtra("editing", true);
+                intent.putExtra("type", "Grocery");
+
+                startActivity(intent);
+
             }
 
             @Override
