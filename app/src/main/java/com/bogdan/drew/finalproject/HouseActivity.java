@@ -48,7 +48,7 @@ public class HouseActivity extends AppCompatActivity{
         spinner.setAdapter(adapter);
 
         TextView textView = findViewById(R.id.house_title);
-        textView.setText(getString(R.string.housename) + code);
+        textView.setText("HOUSE" + code);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -218,7 +218,8 @@ public class HouseActivity extends AppCompatActivity{
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Chore");
-                                house.deleteSingle(getAdapterPosition());
+                                house.deleteSingle(0);
+                                Log.d(TAG, choreList.get(getAdapterPosition()).getId() + "");
                             }
                         });
                 builder.show();
