@@ -48,22 +48,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("House main");
-        if(savedInstanceState != null) {
-            codeList = new ArrayList<>();
-            codeList = savedInstanceState.getIntegerArrayList("codeList");
-            Log.d(TAG, codeList.size() + "herelklkh");
-            if(codeList.size()== 0)
-                codeList = new ArrayList<>();
-            else {
-                for (int i = 0; i < codeList.size(); i++) {
-                    houseList.add(new House(codeList.get(i)));
-                }
-            }
-
-            Log.d(TAG, houseList.size() + "here");
-            adapter.notifyDataSetChanged();
-        }
-        else
+//        if(savedInstanceState != null) {
+//            codeList = new ArrayList<>();
+//            codeList = savedInstanceState.getIntegerArrayList("codeList");
+//            Log.d(TAG, codeList.size() + "herelklkh");
+//            if(codeList.size()== 0)
+//                codeList = new ArrayList<>();
+//            else {
+//                for (int i = 0; i < codeList.size(); i++) {
+//                    houseList.add(new House(codeList.get(i)));
+//                }
+//            }
+//
+//            Log.d(TAG, houseList.size() + "here");
+//            adapter.notifyDataSetChanged();
+//        }
+//        else
             codeList = new ArrayList<>();
         // TODO: assign codes to create house objects and insert them
         RecyclerView recyclerView = findViewById(R.id.houseRecyclerView);
@@ -89,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-
-        outState.putIntegerArrayList("codeList", codeList);
-        Log.d(TAG, codeList.size()+ "");
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//
+//        outState.putIntegerArrayList("codeList", codeList);
+//        Log.d(TAG, codeList.size()+ "");
+//        super.onSaveInstanceState(outState);
+//    }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 

@@ -70,10 +70,10 @@ public class ItemActivity extends AppCompatActivity {
                         house.setCurrentSelected("Debt");
                         if (!editing)
                             house.insert(new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-                        else {
-                            Log.d(TAG, "update");
-                            house.update(intent.getIntExtra("id",-1), new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-                        }
+//                        else {
+//                            Log.d(TAG, "update");
+//                            house.update(intent.getIntExtra("id",-1), new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
+//                        }
                         ItemActivity.this.finish();
                     }
                 }
@@ -116,8 +116,8 @@ public class ItemActivity extends AppCompatActivity {
                         if (!editing)
                             // add chore
                             house.insert(new Chore(chore, date, userObject, house.getHouseListDatabaseReference()));
-                        else
-                            house.update(0, new Chore(chore, date, userObject, house.getHouseListDatabaseReference()));
+                        //else
+                       //     house.update(0, new Chore(chore, date, userObject, house.getHouseListDatabaseReference()));
                         ItemActivity.this.finish();
                     }
                 }
@@ -149,8 +149,8 @@ public class ItemActivity extends AppCompatActivity {
                         if (!editing)
                             // add grocery
                             house.insert(new Grocery(userObject, title, house.getHouseListDatabaseReference()));
-                        else
-                            house.update(houseId, new Grocery(userObject, title, house.getHouseListDatabaseReference()));
+                        //else
+                        //    house.update(houseId, new Grocery(userObject, title, house.getHouseListDatabaseReference()));
                         ItemActivity.this.finish();
                     }
 
