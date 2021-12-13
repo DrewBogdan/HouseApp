@@ -115,6 +115,7 @@ public class Debt extends ListPiece {
                         tempRef.push().setValue("$" + amount);
                         tempRef.push().setValue(description);
                         tempRef.push().setValue(date);
+                        thisRef = tempRef;
                     }
                 }
             });

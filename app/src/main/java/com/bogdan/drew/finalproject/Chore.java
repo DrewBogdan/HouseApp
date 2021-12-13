@@ -87,6 +87,7 @@ public class Chore extends ListPiece {
                         tempRef.push().setValue(userAdded + "-0");
                         tempRef.push().setValue(chore);
                         tempRef.push().setValue(date);
+                        thisRef = tempRef;
                     }
                 }
             });

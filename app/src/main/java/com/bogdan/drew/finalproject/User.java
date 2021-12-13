@@ -66,6 +66,7 @@ public class User extends ListPiece {
                         reference.child("ID").removeValue();
                         reference.child("ID").push().setValue(id+1);
                         DatabaseReference tempRef = ref.child("User" + id);
+                        thisRef = tempRef;
                         tempRef.push().setValue(name);
                     }
                 }
