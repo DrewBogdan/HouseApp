@@ -1,10 +1,15 @@
 package com.bogdan.drew.finalproject;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,9 +36,13 @@ public class HouseActivity extends AppCompatActivity{
     public static final String TAG = "houseTag";
     int code;
     CustomGroceryAdapter groceryAdapter;
-     CustomDebtAdapter debtAdapter;
+    CustomDebtAdapter debtAdapter;
     CustomChoresAdapter choresAdapter;
+    ArrayList<ListPiece> groceryList;
+    ArrayList<ListPiece> debtList;
+    ArrayList<ListPiece> choreList;
     House house;
+    ActivityResultLauncher<Intent> launcher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +50,7 @@ public class HouseActivity extends AppCompatActivity{
         Intent receive_intent = getIntent();
         code = receive_intent.getIntExtra("code", -1);
         house = new House(code);
+
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this, R.array.spinner_items, R.layout.support_simple_spinner_dropdown_item);
@@ -50,32 +60,42 @@ public class HouseActivity extends AppCompatActivity{
         TextView textView = findViewById(R.id.house_title);
         textView.setText("HOUSE" + code);
 
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(spinner.getSelectedItem().toString().compareTo("Debt") == 0) {
                     house.setCurrentSelected("Debt");
-                     debtAdapter = new CustomDebtAdapter(house.getAll());
+                    debtList = new ArrayList<>();
+                    debtList = house.getAll();
+                    debtAdapter = new CustomDebtAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(debtAdapter);
+                    debtAdapter.notifyDataSetChanged();
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Chore") == 0) {
                     house.setCurrentSelected("Chore");
-                     choresAdapter = new CustomChoresAdapter(house.getAll());
+                    choreList = new ArrayList<>();
+                    choreList = house.getAll();
+                     choresAdapter = new CustomChoresAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(choresAdapter);
+                    choresAdapter.notifyDataSetChanged();
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Grocery") == 0) {
                     house.setCurrentSelected("Grocery");
-                     groceryAdapter = new CustomGroceryAdapter(house.getAll());
+                    groceryList = new ArrayList<>();
+                    groceryList = house.getAll();
+                     groceryAdapter = new CustomGroceryAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(groceryAdapter);
+                    groceryAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -85,16 +105,46 @@ public class HouseActivity extends AppCompatActivity{
             }
         });
 
-
+//        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    /**
+//                     gets information back from the second activity and creates a video object or edit it
+//                     * checks if title is repeated
+//                     * @param result  result of the previus activity
+//                     */
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if(result.getResultCode() == Activity.RESULT_OK) {
+//                            Log.d(TAG, "here");
+//                            Intent data = result.getData();
+//                            assert data != null;
+//                            String type = data.getStringExtra("type");
+//                            if(type.compareTo("Debt") == 0) {
+//                                spinner.setSelection(0);
+//                                house.setCurrentSelected("Debt");
+//                                debtList = house.getAll();
+//                                debtAdapter.notifyDataSetChanged();
+//                            }
+//                            else if(type.compareTo("Chore") == 0) {
+//                                spinner.setSelection(1);
+//                                house.setCurrentSelected("Chore");
+//                                choreList = house.getAll();
+//                                choresAdapter.notifyDataSetChanged();
+//                            }
+//                            else if(type.compareTo("Grocery") == 0) {
+//                                spinner.setSelection(2);
+//                                house.setCurrentSelected("Grocery");
+//                                groceryList = house.getAll();
+//                                groceryAdapter.notifyDataSetChanged();
+//                            }
+//
+//                        }
+//                    }
+                //});
     }
 
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
 
-        public CustomDebtAdapter(ArrayList<ListPiece> debtList) {
-            this.debtList = debtList;
-        }
-
-        ArrayList<ListPiece> debtList;
         class CustomDebtViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
@@ -125,7 +175,7 @@ public class HouseActivity extends AppCompatActivity{
                 intent.putExtra("date", date);
                 intent.putExtra("type", "Debt");
                 intent.putExtra("editing", true);
-                startActivity(intent);
+                launcher.launch(intent);
             }
 
             @Override
@@ -175,11 +225,7 @@ public class HouseActivity extends AppCompatActivity{
 
     class CustomChoresAdapter extends RecyclerView.Adapter<CustomChoresAdapter.CustomChoresViewHolder> {
 
-        public CustomChoresAdapter(ArrayList<ListPiece> choreList) {
-            this.choreList = choreList;
-        }
 
-        ArrayList<ListPiece> choreList;
         class CustomChoresViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
@@ -207,7 +253,7 @@ public class HouseActivity extends AppCompatActivity{
                 intent.putExtra("id", chore.getId());
                 intent.putExtra("type", "Chore");
                 intent.putExtra("editing", true);
-                startActivity(intent);
+                launcher.launch(intent);
             }
 
             @Override
@@ -258,12 +304,6 @@ public class HouseActivity extends AppCompatActivity{
     }
 
     class CustomGroceryAdapter extends RecyclerView.Adapter<CustomGroceryAdapter.CustomGroceryViewHolder> {
-        public CustomGroceryAdapter(ArrayList<ListPiece> groceryList) {
-            this.groceryList = groceryList;
-        }
-
-        ArrayList<ListPiece> groceryList;
-
         class CustomGroceryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
             TextView title;
@@ -287,7 +327,7 @@ public class HouseActivity extends AppCompatActivity{
                 intent.putExtra("editing", true);
                 intent.putExtra("type", "Grocery");
 
-                startActivity(intent);
+                launcher.launch(intent);
 
             }
 
@@ -358,14 +398,12 @@ public class HouseActivity extends AppCompatActivity{
                     intent.putExtra("type", "Grocery");
                 intent.putExtra("houseId", code);
                 intent.putExtra("editing", false);
-                startActivity(intent);
+                launcher.launch(intent);
 
                 break;
             case R.id.deleteMenuItem:
                 spinner = (Spinner) findViewById(R.id.spinner);
                 selected = spinner.getSelectedItem().toString();
-                House house = new House(code);
-
                 if(selected.compareTo("Debt") == 0)
                     house.setCurrentSelected("Debt");
                 else if(selected.compareTo("Chore") == 0)
@@ -379,15 +417,42 @@ public class HouseActivity extends AppCompatActivity{
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.deleteAll();
-//                                if(selected.compareTo("Debt") == 0)
-//                                    debtAdapter.notifyDataSetChanged();
-//                                else if(selected.compareTo("Chore") == 0)
-//                                    choresAdapter.notifyDataSetChanged();
-//                                else if(selected.compareTo("Grocery") == 0)
-//                                    groceryAdapter.notifyDataSetChanged();
+                                if(selected.compareTo("Debt") == 0) {
+                                    debtList.clear();
+                                    debtAdapter.notifyDataSetChanged();
+                                }
+                                else if(selected.compareTo("Chore") == 0) {
+                                    choreList.clear();
+                                    choresAdapter.notifyDataSetChanged();
+                                }
+                                else if(selected.compareTo("Grocery") == 0) {
+                                    groceryList.clear();
+                                    groceryAdapter.notifyDataSetChanged();
+                                }
                             }
                         });
                 builder.show();
+                break;
+            case R.id.refreshMenuItem:
+                spinner = (Spinner) findViewById(R.id.spinner);
+                selected = spinner.getSelectedItem().toString();
+                if(selected.compareTo("Debt") == 0) {
+                    house.setCurrentSelected("Debt");
+                    debtList = house.getAll();
+                    debtAdapter.notifyDataSetChanged();
+                }
+                else if(selected.compareTo("Chore") == 0) {
+                    house.setCurrentSelected("Chore");
+                    choreList = house.getAll();
+                    choresAdapter.notifyDataSetChanged();
+                }
+                else if(selected.compareTo("Grocery") == 0) {
+                    house.setCurrentSelected("Grocery");
+                    groceryList = house.getAll();
+                    groceryAdapter.notifyDataSetChanged();
+                }
+
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -2,6 +2,7 @@ package com.bogdan.drew.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,10 +76,15 @@ public class ItemActivity extends AppCompatActivity {
                         User owedObject = new User(owed, house.getHouseListDatabaseReference());
                         User owingObject = new User(owing, house.getHouseListDatabaseReference());
                         house.setCurrentSelected("Debt");
-                        if (!editing)
+                        if (!editing) {
                             house.insert(new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-                        ItemActivity.this.finish();
+                            intent.putExtra("type", "Chore");
+                            ItemActivity.this.setResult(Activity.RESULT_OK, intent);
+                            ItemActivity.this.finish();
+                        }
                     }
+
+
                 }
             });
 
@@ -119,12 +125,13 @@ public class ItemActivity extends AppCompatActivity {
                         Toast.makeText(ItemActivity.this, "missing input", Toast.LENGTH_LONG).show();
                     else {
                         User userObject = new User(userText, house.getHouseListDatabaseReference());
-                        if (!editing)
-                            // add chore
+                        if (!editing) {// add chore
                             house.insert(new Chore(chore, date, userObject, house.getHouseListDatabaseReference()));
-                        //else
-                       //     house.update(0, new Chore(chore, date, userObject, house.getHouseListDatabaseReference()));
-                        ItemActivity.this.finish();
+                            intent.putExtra("type", "Chore");
+                            ItemActivity.this.setResult(Activity.RESULT_OK, intent);
+                            ItemActivity.this.finish();
+                        }
+
                     }
                 }
             });
@@ -153,12 +160,13 @@ public class ItemActivity extends AppCompatActivity {
                     else {
                         User userObject = new User(user, house.getHouseListDatabaseReference());
                         if (!editing)
-                            // add grocery
+                        {
                             house.insert(new Grocery(userObject, title, house.getHouseListDatabaseReference()));
-                        //else
-                        //    house.update(houseId, new Grocery(userObject, title, house.getHouseListDatabaseReference()));
-
-                        ItemActivity.this.finish();
+                            intent.putExtra("type", "Chore");
+                            Log.d(TAG, "here");
+                            ItemActivity.this.setResult(Activity.RESULT_OK, intent);
+                            ItemActivity.this.finish();
+                        }
                     }
 
                 }

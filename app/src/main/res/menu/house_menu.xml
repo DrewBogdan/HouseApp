@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/refreshMenuItem"
+        android:title="refresh"
+        android:icon="@android:drawable/ic_menu_upload"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/addMenuItem"
         android:title="add item"
         android:icon="@android:drawable/ic_menu_add"
