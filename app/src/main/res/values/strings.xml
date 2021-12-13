@@ -15,8 +15,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string-array name="spinner_items">
-        <item>Debts</item>
-        <item>Chores</item>
-        <item>Groceries</item>
+        <item>Debt</item>
+        <item>Chore</item>
+        <item>Grocery</item>
     </string-array>
 </resources>

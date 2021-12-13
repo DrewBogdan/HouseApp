@@ -49,17 +49,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("House main");
         if(savedInstanceState != null) {
+            codeList = new ArrayList<>();
             codeList = savedInstanceState.getIntegerArrayList("codeList");
-            for (int i = 0; i < codeList.size(); i++) {
-                houseList.add(new House(codeList.get(i)));
+            Log.d(TAG, codeList.size() + "herelklkh");
+            if(codeList.size()== 0)
+                codeList = new ArrayList<>();
+            else {
+                for (int i = 0; i < codeList.size(); i++) {
+                    houseList.add(new House(codeList.get(i)));
+                }
             }
+
             Log.d(TAG, houseList.size() + "here");
             adapter.notifyDataSetChanged();
         }
-        else {
+        else
             codeList = new ArrayList<>();
-            Log.d(TAG, "not here");
-        }
         // TODO: assign codes to create house objects and insert them
         RecyclerView recyclerView = findViewById(R.id.houseRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -86,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+
         outState.putIntegerArrayList("codeList", codeList);
+        Log.d(TAG, codeList.size()+ "");
+        super.onSaveInstanceState(outState);
     }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
@@ -148,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
             House house = houseList.get(position);
-            Log.d(TAG, position + "");
             holder.updateView(house);
         }
 
