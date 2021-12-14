@@ -352,7 +352,7 @@ public class HouseActivity extends AppCompatActivity{
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Grocery");
-                                house.deleteSingle(getAdapterPosition());
+                                house.deleteSingle(groceryList.get(getAdapterPosition()).getId());
                             }
                         });
                 builder.show();
