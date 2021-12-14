@@ -78,7 +78,7 @@ public class ItemActivity extends AppCompatActivity {
                         house.setCurrentSelected("Debt");
                         if (!editing) {
                             house.insert(new Debt(owedObject, owingObject, amount, description, date, house.getHouseListDatabaseReference()));
-                            intent.putExtra("type", "Chore");
+                            intent.putExtra("type", "Debt");
                             ItemActivity.this.setResult(Activity.RESULT_OK, intent);
                             ItemActivity.this.finish();
                         }
@@ -162,7 +162,7 @@ public class ItemActivity extends AppCompatActivity {
                         if (!editing)
                         {
                             house.insert(new Grocery(userObject, title, house.getHouseListDatabaseReference()));
-                            intent.putExtra("type", "Chore");
+                            intent.putExtra("type", "Grocery");
                             Log.d(TAG, "here");
                             ItemActivity.this.setResult(Activity.RESULT_OK, intent);
                             ItemActivity.this.finish();

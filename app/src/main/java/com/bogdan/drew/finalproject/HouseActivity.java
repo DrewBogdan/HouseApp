@@ -66,38 +66,34 @@ public class HouseActivity extends AppCompatActivity{
 //        recyclerView.setAdapter(debtAdapter);
 //        debtList = house.getAll();
 //        debtAdapter.notifyDataSetChanged();
+        house.givePropertyChange(HouseActivity.this);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(spinner.getSelectedItem().toString().compareTo("Debt") == 0) {
                     house.setCurrentSelected("Debt");
-                    debtList = new ArrayList<>();
-                    debtList = house.getAll();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(debtAdapter);
-                    debtAdapter.notifyDataSetChanged();
+                    house.givePropertyChange(HouseActivity.this);
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Chore") == 0) {
                     house.setCurrentSelected("Chore");
-                    choreList = new ArrayList<>();
-                    choreList = house.getAll();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(choresAdapter);
-                    choresAdapter.notifyDataSetChanged();
+                    house.givePropertyChange(HouseActivity.this);
                 }
                 else if(spinner.getSelectedItem().toString().compareTo("Grocery") == 0) {
                     house.setCurrentSelected("Grocery");
-                    groceryList = new ArrayList<>();
-                    groceryList = house.getAll();
+
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(groceryAdapter);
-                    groceryAdapter.notifyDataSetChanged();
+                    house.givePropertyChange(HouseActivity.this);
                 }
             }
 
@@ -113,28 +109,28 @@ public class HouseActivity extends AppCompatActivity{
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if(result.getResultCode() == Activity.RESULT_OK) {
-                            Log.d(TAG, "here");
+
                             Intent data = result.getData();
                             assert data != null;
                             String type = data.getStringExtra("type");
+                            Log.d(TAG, type);
                             if(type.compareTo("Debt") == 0) {
                                 spinner.setSelection(0);
                                 house.setCurrentSelected("Debt");
-                                debtList = house.getAll();
-                                debtAdapter.notifyDataSetChanged();
+                                house.givePropertyChange(HouseActivity.this);
+
                             }
                             else if(type.compareTo("Chore") == 0) {
                                 spinner.setSelection(1);
                                 house.setCurrentSelected("Chore");
                                 choreList = house.getAll();
-                                Log.d(TAG, "size" + choreList.size());
-                                choresAdapter.notifyDataSetChanged();
+                                house.givePropertyChange(HouseActivity.this);
+
                             }
                             else if(type.compareTo("Grocery") == 0) {
                                 spinner.setSelection(2);
                                 house.setCurrentSelected("Grocery");
-                                groceryList = house.getAll();
-                                groceryAdapter.notifyDataSetChanged();
+                                house.givePropertyChange(HouseActivity.this);
                             }
 
                         }
@@ -142,6 +138,21 @@ public class HouseActivity extends AppCompatActivity{
                 });
     }
 
+    public void dataSetChanged() {
+
+        debtList.clear();
+        choreList.clear();
+        groceryList.clear();
+        house.setCurrentSelected("Debt");
+        debtList = house.getAll();
+        house.setCurrentSelected("Chore");
+        choreList = house.getAll();
+        house.setCurrentSelected("Grocery");
+        groceryList = house.getAll();
+        debtAdapter.notifyDataSetChanged();
+        groceryAdapter.notifyDataSetChanged();
+        choresAdapter.notifyDataSetChanged();
+    }
 
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
 
@@ -406,54 +417,26 @@ public class HouseActivity extends AppCompatActivity{
             case R.id.deleteMenuItem:
                 spinner = (Spinner) findViewById(R.id.spinner);
                 selected = spinner.getSelectedItem().toString();
-                if(selected.compareTo("Debt") == 0)
-                    house.setCurrentSelected("Debt");
-                else if(selected.compareTo("Chore") == 0)
-                    house.setCurrentSelected("Chore");
-                else if(selected.compareTo("Grocery") == 0)
-                    house.setCurrentSelected("Grocery");
+
                 ArrayList<ListPiece> listPieceArrayList = house.getAll();
                 AlertDialog.Builder builder = new AlertDialog.Builder(HouseActivity.this);
                 builder.setTitle("Delete " + selected).setMessage("You are about to delete a " + selected).setNegativeButton("Dismiss", null)
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                if(selected.compareTo("Debt") == 0)
+                                    house.setCurrentSelected("Debt");
+                                else if(selected.compareTo("Chore") == 0)
+                                    house.setCurrentSelected("Chore");
+                                else if(selected.compareTo("Grocery") == 0)
+                                    house.setCurrentSelected("Grocery");
                                 house.deleteAll();
-                                if(selected.compareTo("Debt") == 0) {
-                                    debtList.clear();
-                                    debtAdapter.notifyDataSetChanged();
-                                }
-                                else if(selected.compareTo("Chore") == 0) {
-                                    choreList.clear();
-                                    choresAdapter.notifyDataSetChanged();
-                                }
-                                else if(selected.compareTo("Grocery") == 0) {
-                                    groceryList.clear();
-                                    groceryAdapter.notifyDataSetChanged();
-                                }
+                                house.givePropertyChange(HouseActivity.this);
+
                             }
                         });
                 builder.show();
                 break;
-            case R.id.refreshMenuItem:
-                spinner = (Spinner) findViewById(R.id.spinner);
-                selected = spinner.getSelectedItem().toString();
-                if(selected.compareTo("Debt") == 0) {
-                    house.setCurrentSelected("Debt");
-                    debtList = house.getAll();
-                    debtAdapter.notifyDataSetChanged();
-                }
-                else if(selected.compareTo("Chore") == 0) {
-                    house.setCurrentSelected("Chore");
-                    choreList = house.getAll();
-                    choresAdapter.notifyDataSetChanged();
-                }
-                else if(selected.compareTo("Grocery") == 0) {
-                    house.setCurrentSelected("Grocery");
-                    groceryList = house.getAll();
-                    groceryAdapter.notifyDataSetChanged();
-                }
-
 
         }
         return super.onOptionsItemSelected(item);

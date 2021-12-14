@@ -19,7 +19,7 @@ public class House {
     private DrewList groceries;
     private DrewList debts;
     private DrewList users;
-
+    private HouseActivity houseActivity;
     private String name;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -65,14 +65,14 @@ public class House {
         checkId();
     }
 
-    public void givePropertyChange(RecyclerView recyclerView) {
+    public void givePropertyChange(HouseActivity house) {
 
         /**
          * give the reference to the recycler view
          * object here and make a method this can
          * accsess to setup the property change listeners
          */
-
+        houseActivity = house;
     }
 
     public void propertyChange() {
@@ -84,7 +84,8 @@ public class House {
          * this will be called alot when the database is changed
          * if that makes sense
          */
-
+        if(houseActivity != null)
+            houseActivity.dataSetChanged();
     }
 
     private void checkId() {
