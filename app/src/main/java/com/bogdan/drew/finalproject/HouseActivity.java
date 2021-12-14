@@ -35,12 +35,12 @@ public class HouseActivity extends AppCompatActivity{
 
     public static final String TAG = "houseTag";
     int code;
-    CustomGroceryAdapter groceryAdapter;
-    CustomDebtAdapter debtAdapter;
-    CustomChoresAdapter choresAdapter;
-    ArrayList<ListPiece> groceryList;
-    ArrayList<ListPiece> debtList;
-    ArrayList<ListPiece> choreList;
+    CustomGroceryAdapter  groceryAdapter = new CustomGroceryAdapter();;
+    CustomDebtAdapter debtAdapter = new CustomDebtAdapter();
+    CustomChoresAdapter choresAdapter = new CustomChoresAdapter();
+    ArrayList<ListPiece> groceryList = new ArrayList<>();
+    ArrayList<ListPiece> debtList = new ArrayList<>();
+    ArrayList<ListPiece> choreList= new ArrayList<>();
     House house;
     ActivityResultLauncher<Intent> launcher;
     @Override
@@ -58,9 +58,14 @@ public class HouseActivity extends AppCompatActivity{
         spinner.setAdapter(adapter);
 
         TextView textView = findViewById(R.id.house_title);
-        textView.setText("HOUSE" + code);
-
-
+        textView.setText("HOUSE " + code);
+//        spinner.setSelection(0);
+//        RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(debtAdapter);
+//        debtList = house.getAll();
+//        debtAdapter.notifyDataSetChanged();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -68,7 +73,6 @@ public class HouseActivity extends AppCompatActivity{
                     house.setCurrentSelected("Debt");
                     debtList = new ArrayList<>();
                     debtList = house.getAll();
-                    debtAdapter = new CustomDebtAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -79,7 +83,6 @@ public class HouseActivity extends AppCompatActivity{
                     house.setCurrentSelected("Chore");
                     choreList = new ArrayList<>();
                     choreList = house.getAll();
-                     choresAdapter = new CustomChoresAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -90,7 +93,6 @@ public class HouseActivity extends AppCompatActivity{
                     house.setCurrentSelected("Grocery");
                     groceryList = new ArrayList<>();
                     groceryList = house.getAll();
-                     groceryAdapter = new CustomGroceryAdapter();
                     RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
@@ -105,42 +107,39 @@ public class HouseActivity extends AppCompatActivity{
             }
         });
 
-//        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    /**
-//                     gets information back from the second activity and creates a video object or edit it
-//                     * checks if title is repeated
-//                     * @param result  result of the previus activity
-//                     */
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if(result.getResultCode() == Activity.RESULT_OK) {
-//                            Log.d(TAG, "here");
-//                            Intent data = result.getData();
-//                            assert data != null;
-//                            String type = data.getStringExtra("type");
-//                            if(type.compareTo("Debt") == 0) {
-//                                spinner.setSelection(0);
-//                                house.setCurrentSelected("Debt");
-//                                debtList = house.getAll();
-//                                debtAdapter.notifyDataSetChanged();
-//                            }
-//                            else if(type.compareTo("Chore") == 0) {
-//                                spinner.setSelection(1);
-//                                house.setCurrentSelected("Chore");
-//                                choreList = house.getAll();
-//                                choresAdapter.notifyDataSetChanged();
-//                            }
-//                            else if(type.compareTo("Grocery") == 0) {
-//                                spinner.setSelection(2);
-//                                house.setCurrentSelected("Grocery");
-//                                groceryList = house.getAll();
-//                                groceryAdapter.notifyDataSetChanged();
-//                            }
-//
-//                        }
-//                    }
-                //});
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == Activity.RESULT_OK) {
+                            Log.d(TAG, "here");
+                            Intent data = result.getData();
+                            assert data != null;
+                            String type = data.getStringExtra("type");
+                            if(type.compareTo("Debt") == 0) {
+                                spinner.setSelection(0);
+                                house.setCurrentSelected("Debt");
+                                debtList = house.getAll();
+                                debtAdapter.notifyDataSetChanged();
+                            }
+                            else if(type.compareTo("Chore") == 0) {
+                                spinner.setSelection(1);
+                                house.setCurrentSelected("Chore");
+                                choreList = house.getAll();
+                                Log.d(TAG, "size" + choreList.size());
+                                choresAdapter.notifyDataSetChanged();
+                            }
+                            else if(type.compareTo("Grocery") == 0) {
+                                spinner.setSelection(2);
+                                house.setCurrentSelected("Grocery");
+                                groceryList = house.getAll();
+                                groceryAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+                    }
+                });
     }
 
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
@@ -264,7 +263,7 @@ public class HouseActivity extends AppCompatActivity{
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Chore");
-                                house.deleteSingle(0);
+                                house.deleteSingle(choreList.get(getAdapterPosition()).getId());
                                 Log.d(TAG, choreList.get(getAdapterPosition()).getId() + "");
                             }
                         });

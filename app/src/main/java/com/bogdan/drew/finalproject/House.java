@@ -12,7 +12,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class House {
 
@@ -66,13 +65,15 @@ public class House {
         checkId();
     }
 
-    public void givePropertyChange() {
+    public DrewList givePropertyChange(String type) {
 
         /**
          * give the reference to the recycler view
          * object here and make a method this can
          * accsess to setup the property change listeners
          */
+        currentSelected.givePropertyChange(currentSelected.house);
+        return currentSelected;
     }
 
     public void propertyChange() {
@@ -84,6 +85,7 @@ public class House {
          * this will be called alot when the database is changed
          * if that makes sense
          */
+
     }
 
     private void checkId() {
