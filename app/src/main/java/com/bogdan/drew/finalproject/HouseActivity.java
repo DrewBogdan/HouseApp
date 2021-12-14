@@ -418,18 +418,26 @@ public class HouseActivity extends AppCompatActivity{
                 spinner = (Spinner) findViewById(R.id.spinner);
                 selected = spinner.getSelectedItem().toString();
 
-                ArrayList<ListPiece> listPieceArrayList = house.getAll();
                 AlertDialog.Builder builder = new AlertDialog.Builder(HouseActivity.this);
                 builder.setTitle("Delete " + selected).setMessage("You are about to delete a " + selected).setNegativeButton("Dismiss", null)
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if(selected.compareTo("Debt") == 0)
+                                if(selected.compareTo("Debt") == 0) {
                                     house.setCurrentSelected("Debt");
-                                else if(selected.compareTo("Chore") == 0)
+                                    debtList.clear();
+                                    debtAdapter.notifyDataSetChanged();
+                                }
+                                else if(selected.compareTo("Chore") == 0) {
                                     house.setCurrentSelected("Chore");
-                                else if(selected.compareTo("Grocery") == 0)
+                                    choreList.clear();
+                                    choresAdapter.notifyDataSetChanged();
+                                }
+                                else if(selected.compareTo("Grocery") == 0) {
                                     house.setCurrentSelected("Grocery");
+                                    groceryList.clear();
+                                    groceryAdapter.notifyDataSetChanged();
+                                }
                                 house.deleteAll();
                                 house.givePropertyChange(HouseActivity.this);
 
