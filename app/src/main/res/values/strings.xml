@@ -13,7 +13,14 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="housename">\"House \"</string>
+    <string name="housename">House </string>
+    <string name="enter_a_code">enter a code</string>
+    <string name="add_house">Add house</string>
+    <string name="houseTitle">House </string>
+    <string name="house_title">HOUSE </string>
+    <string name="alertm">You are about to delete all debts</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="deletei">Delete</string>
 
     <string-array name="spinner_items">
         <item>Debt</item>

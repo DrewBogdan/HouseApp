@@ -65,15 +65,14 @@ public class House {
         checkId();
     }
 
-    public DrewList givePropertyChange(String type) {
+    public void givePropertyChange(RecyclerView recyclerView) {
 
         /**
          * give the reference to the recycler view
          * object here and make a method this can
          * accsess to setup the property change listeners
          */
-        currentSelected.givePropertyChange(currentSelected.house);
-        return currentSelected;
+
     }
 
     public void propertyChange() {

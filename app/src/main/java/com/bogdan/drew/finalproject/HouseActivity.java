@@ -27,7 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,15 +49,16 @@ public class HouseActivity extends AppCompatActivity{
         Intent receive_intent = getIntent();
         code = receive_intent.getIntExtra("code", -1);
         house = new House(code);
-
+        setTitle(getString(R.string.houseTitle) + code);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(this, R.array.spinner_items, R.layout.support_simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TextView textView = findViewById(R.id.house_title);
-        textView.setText("HOUSE " + code);
+        textView.setText(getString(R.string.house_title) + code);
 //        spinner.setSelection(0);
 //        RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HouseActivity.this);
@@ -142,6 +142,7 @@ public class HouseActivity extends AppCompatActivity{
                 });
     }
 
+
     class CustomDebtAdapter extends RecyclerView.Adapter<CustomDebtAdapter.CustomDebtViewHolder> {
 
         class CustomDebtViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -180,8 +181,8 @@ public class HouseActivity extends AppCompatActivity{
             @Override
             public boolean onLongClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(HouseActivity.this);
-                builder.setTitle("Delete Debt").setMessage("You are about to delete a debt").setNegativeButton("Dismiss", null)
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                builder.setTitle("Delete Debt").setMessage(R.string.alertm).setNegativeButton(R.string.dismiss, null)
+                        .setPositiveButton(R.string.deletei, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Debt");
@@ -318,7 +319,6 @@ public class HouseActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                // TODO: start intent to open house main activity using the code
                 Grocery grocery = (Grocery) groceryList.get(getAdapterPosition());
                 Intent intent = new Intent(HouseActivity.this, ItemActivity.class);
                 intent.putExtra("grocery", grocery.getGrocery());
@@ -385,6 +385,9 @@ public class HouseActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
             case R.id.addMenuItem:
                 Spinner spinner = (Spinner) findViewById(R.id.spinner);
                 String selected = spinner.getSelectedItem().toString();

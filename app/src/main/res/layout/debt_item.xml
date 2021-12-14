@@ -45,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:fontFamily="@font/baloo_thambi"
+        android:textColor="#3F51B5"
         android:hint="description"
         android:minHeight="48dp"
         android:textSize="16sp"
