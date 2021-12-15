@@ -163,7 +163,7 @@ public class ChoreList extends DrewList {
             User usr = new User(baseReference);
             Chore chr = new Chore(baseReference);
             chr.setId(parser.nextInt());
-            parser = new Scanner(choreParse).useDelimiter("-Mq");
+            parser = new Scanner(choreParse).useDelimiter("-M");
             parser.next();
             while (parser.hasNext()) {
                 strings.add(parser.next().substring(10));

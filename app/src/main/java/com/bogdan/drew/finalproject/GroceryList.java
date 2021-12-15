@@ -32,7 +32,7 @@ public class GroceryList extends DrewList {
                     Log.d(TAG, "onComplete: failed");
                 }
                 else {
-                    Log.d(TAG, "onComplete: " + task.getResult().getValue());
+                    Log.d(TAG, "onComplete KEY: " + task.getResult().getValue());
                     updateData(String.valueOf(task.getResult().getValue()));
                     attachListener();
                 }
@@ -46,6 +46,7 @@ public class GroceryList extends DrewList {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null) {
                     updateData(dataSnapshot.getValue().toString());
+                    Log.d(TAG, "onDataChange: " + dataSnapshot.getKey());
                     firePropertyChange();
                 }
             }
@@ -158,7 +159,7 @@ public class GroceryList extends DrewList {
             User usr = new User(baseReference);
             Grocery gry = new Grocery(baseReference);
             gry.setId(parser.nextInt());
-            parser = new Scanner(toParse).useDelimiter("-Mq");
+            parser = new Scanner(toParse).useDelimiter("-M");
             parser.next();
             while (parser.hasNext()) {
                 strings.add(parser.next().substring(10));

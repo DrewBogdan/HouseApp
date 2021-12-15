@@ -156,7 +156,7 @@ public class DebtList extends DrewList {
         if(debtParse.length() > 20) {
             Log.d(TAG, "parseDebt: debtPArse " + debtParse);
             ArrayList<String> strings = new ArrayList<>();
-            Scanner parser = new Scanner(debtParse).useDelimiter("-Mq");
+            Scanner parser = new Scanner(debtParse).useDelimiter("-M");
             User usr = new User(baseReference);
             Debt dbt = new Debt(baseReference);
             String idString = parser.next();
