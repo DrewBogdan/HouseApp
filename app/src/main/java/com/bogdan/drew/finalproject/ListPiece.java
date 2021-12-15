@@ -21,6 +21,7 @@ public abstract class ListPiece {
 
     protected void deleteData() {
         if(thisRef != null) {
+            Log.d("listpiece", "deleteData: what is this" + thisRef.toString());
             thisRef.removeValue();
         }
     }

@@ -101,6 +101,7 @@ public class ChoreList extends DrewList {
             }
         }
         if(toDelete != -1) {
+            Log.d(TAG, "deleteSingle: to delete = " + toDelete);
             list.remove(toDelete);
         }
 

@@ -81,6 +81,12 @@ public class Debt extends ListPiece {
         this.userOwed = userOwed;
     }
 
+    public void setId(int id) {
+        super.setId(id);
+        thisRef = reference.child("DebtList").child("Debt" + id);
+    }
+
+
     @Override
     public String toString() {
         return "Owed " + userOwed + " | Owing " + userOwing + " | " + amount + " | " + date + " | " + description + " | " + id;
@@ -127,6 +133,7 @@ public class Debt extends ListPiece {
             tempRef.push().setValue(amount);
             tempRef.push().setValue(description);
             tempRef.push().setValue(date);
+            thisRef = tempRef;
         }
 
     }

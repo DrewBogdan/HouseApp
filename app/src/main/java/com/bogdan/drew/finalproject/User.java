@@ -42,6 +42,12 @@ public class User extends ListPiece {
         this.name = name;
     }
 
+    public void setId(int id) {
+        super.setId(id);
+        thisRef = reference.child("UserList").child("User" + id);
+    }
+
+
     @Override
     protected void addData(DatabaseReference ref) {
         DatabaseReference tempRef;
@@ -75,6 +81,7 @@ public class User extends ListPiece {
         else {
             tempRef = ref.child("User" + id);
             tempRef.push().setValue(name);
+            thisRef = tempRef;
         }
     }
 

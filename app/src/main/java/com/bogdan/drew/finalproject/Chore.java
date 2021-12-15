@@ -60,6 +60,11 @@ public class Chore extends ListPiece {
         this.date = date;
     }
 
+    public void setId(int id) {
+        super.setId(id);
+        thisRef = reference.child("ChoreList").child("Chore" + id);
+    }
+
     @Override
     protected void addData(DatabaseReference ref) {
         DatabaseReference tempRef;
@@ -97,6 +102,7 @@ public class Chore extends ListPiece {
             tempRef.push().setValue(userAdded + "-0");
             tempRef.push().setValue(chore);
             tempRef.push().setValue(date);
+            thisRef = tempRef;
         }
     }
 

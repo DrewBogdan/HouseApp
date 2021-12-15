@@ -151,65 +151,6 @@ public class GroceryList extends DrewList {
     }
 
     private void parseGrocery(String toParse) {
-//        Log.d(TAG, "parseGrocery: " +toParse);
-//        if (toParse.length() > 20) {
-//            Grocery gry;
-//            User usr = new User(baseReference);
-//            int gryId;
-//            int usrId;
-//            String gryString;
-//            String usrName;
-//            String usrIdString;
-//            Scanner parser = new Scanner(toParse).useDelimiter("=");
-//            gryId = parser.nextInt();
-//            parser.next();
-//            String tempString = parser.next();
-//            if(tempString.charAt(0) == '{') {
-//                usrName = parser.next();
-//                usrIdString = parser.next();
-//                Scanner idParse = new Scanner(usrIdString).useDelimiter("");
-//                usrId = idParse.nextInt();
-//                usr.setId(usrId);
-//                gryString = parser.next();
-//                parser = new Scanner(gryString).useDelimiter(",");
-//                gryString = parser.next();
-//                parser = new Scanner(usrName).useDelimiter(",");
-//                usrName = parser.next();
-//                usr.setName(usrName);
-//                Log.d(TAG, "parseGrocery1: " + usrIdString);
-//                Log.d(TAG, "parseGrocery1: " + gryString);
-//                Log.d(TAG, "parseGrocery1: " + usrName);
-//            } else {
-//                gryString = tempString;
-//                Log.d(TAG, "parseGrocery2: " + gryString);
-//                parser.next();
-//                usrName = parser.next();
-//                usrIdString = parser.next();
-//                parser = new Scanner(gryString).useDelimiter(",");
-//                gryString = parser.next();
-//                parser = new Scanner(usrName).useDelimiter(",");
-//                usrName = parser.next();
-//                usr.setName(usrName);
-//                parser = new Scanner(usrIdString).useDelimiter("");
-//                Log.d(TAG, "parseGrocery2: " + usrIdString);
-//                Log.d(TAG, "parseGrocery2: " + gryString);
-//                Log.d(TAG, "parseGrocery2: " + usrName);
-//                usrId = parser.nextInt();
-//            }
-//            if(gryString.contains("}")) {
-//                String newGry = "";
-//                for(int x = 0; x < gryString.length(); x++) {
-//                    if(gryString.charAt(x) != '}') {
-//                        newGry += gryString.charAt(x);
-//                    }
-//                }
-//                gryString = newGry;
-//            }
-//            usr.setId(usrId);
-//            gry = new Grocery(usr, gryString, baseReference);
-//            gry.setId(gryId);
-//            list.add(gry);
-//        }
         if (toParse.length() > 20) {
             Log.d(TAG, "parseDebt: debtPArse " + toParse);
             ArrayList<String> strings = new ArrayList<>();

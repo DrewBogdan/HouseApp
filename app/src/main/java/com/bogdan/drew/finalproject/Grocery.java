@@ -57,6 +57,12 @@ public class Grocery extends ListPiece {
         this.grocery = grocery;
     }
 
+    public void setId(int id) {
+        super.setId(id);
+        thisRef = reference.child("GroceryList").child("Grocery" + id);
+    }
+
+
     @NonNull
     public String toString() {
         return grocery + " | " + userAdded + " | " + id;
