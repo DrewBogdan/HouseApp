@@ -201,6 +201,9 @@ public class HouseActivity extends AppCompatActivity{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Debt");
                                 house.deleteSingle(debtList.get(getAdapterPosition()).getId());
+                                house.givePropertyChange(HouseActivity.this);
+                                debtList.remove(getAdapterPosition());
+                                debtAdapter.notifyItemRemoved(getAdapterPosition());
                             }
                         });
                 builder.show();
@@ -279,7 +282,9 @@ public class HouseActivity extends AppCompatActivity{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Chore");
                                 house.deleteSingle(choreList.get(getAdapterPosition()).getId());
-                                Log.d(TAG, choreList.get(getAdapterPosition()).getId() + "");
+                                house.givePropertyChange(HouseActivity.this);
+                                choreList.remove(getAdapterPosition());
+                                choresAdapter.notifyItemRemoved(getAdapterPosition());
                             }
                         });
                 builder.show();
@@ -353,6 +358,9 @@ public class HouseActivity extends AppCompatActivity{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 house.setCurrentSelected("Grocery");
                                 house.deleteSingle(groceryList.get(getAdapterPosition()).getId());
+                                house.givePropertyChange(HouseActivity.this);
+                                groceryList.remove(getAdapterPosition());
+                                groceryAdapter.notifyItemRemoved(getAdapterPosition());
                             }
                         });
                 builder.show();
