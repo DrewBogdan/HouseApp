@@ -430,7 +430,7 @@ public class HouseActivity extends AppCompatActivity{
                 selected = spinner.getSelectedItem().toString();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(HouseActivity.this);
-                builder.setTitle("Delete " + selected).setMessage("You are about to delete a " + selected).setNegativeButton("Dismiss", null)
+                builder.setTitle("Delete " + selected).setMessage("You are about to delete all " + selected  +"s").setNegativeButton("Dismiss", null)
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
